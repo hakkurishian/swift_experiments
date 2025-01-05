@@ -1,5 +1,6 @@
 import Testing
 
+/// Checks for memory leaks when going out of scope
 final class LeakChecker {
     typealias Checkable = AnyObject & Sendable
 
@@ -26,7 +27,7 @@ final class LeakChecker {
 
     typealias Scope = (LeakChecker) -> Void
 
-    let scope: Scope
+    private let scope: Scope
 
     @discardableResult
     init(scope: @escaping Scope) {
