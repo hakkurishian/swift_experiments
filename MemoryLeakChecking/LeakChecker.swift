@@ -4,12 +4,15 @@ import Testing
 final class LeakChecker {
     typealias Checkable = AnyObject & Sendable
 
-    func checkForMemoryLeak<T: Checkable>(sourceLocation: SourceLocation = .here,
+    func checkForMemoryLeak<T: Checkable>(fileID: String = #fileID,
+                                          filePath: String = #filePath,
+                                          line: Int = #line,
+                                          column: Int = #column,
                                           _ instanceFactory: @autoclosure () -> T) -> T
     {
         let instance = instanceFactory()
         checks.append(.init(instance,
-                            sourceLocation: sourceLocation))
+                            sourceLocation: SourceLocation(fileID: fileID, filePath: filePath, line: line, column: column)))
         return instance
     }
 
@@ -40,8 +43,4 @@ final class LeakChecker {
             #expect(check.isLeaking == false, "Potential Memory Leak detected", sourceLocation: check.sourceLocation)
         }
     }
-}
-
-extension SourceLocation {
-    static let here = Self(fileID: #fileID, filePath: #filePath, line: #line, column: #column)
 }
