@@ -1,3 +1,4 @@
+import Testing
 
 final class LeakChecker {
     typealias Checkable = AnyObject & Sendable
@@ -11,7 +12,7 @@ final class LeakChecker {
         return instance
     }
 
-    fileprivate struct LeakCheck {
+    private struct LeakCheck {
         let sourceLocation: SourceLocation
         private weak var weakReference: Checkable?
         var isLeaking: Bool { weakReference != nil }
